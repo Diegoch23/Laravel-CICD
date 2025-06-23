@@ -60,6 +60,9 @@ pipeline {
             sh 'cd "/var/lib/jenkins/workspace/LaravelTest"'
             sh 'rm -rf artifact.zip'
             sh 'zip -r artifact.zip . -x "*node_modules**"'
+             withCredentials([sshUserPrivateKey(credentialsId: "aws-ec2", keyFileVariable: 'keyfile')]) {
+                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/LaravelTest/artifact.zip ec2-user@3.83.118.114:/home/ec2-user/artifact'
+            }
             }
 
         always {
