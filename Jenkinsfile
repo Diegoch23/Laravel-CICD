@@ -58,13 +58,13 @@ pipeline {
     post {
         success {
             sh 'cd "/var/lib/jenkins/workspace/LaravelTest"'
-            sh 'rm -rf artifact.zip'
-            sh 'zip -r artifact.zip . -x "*node_modules**"'
+            sh 'rm -rf artifact2.zip'
+            sh 'zip -r artifact2.zip . -x "*node_modules**"'
              withCredentials([sshUserPrivateKey(credentialsId: "aws-ec2", keyFileVariable: 'keyfile')]) {
-                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/LaravelTest/artifact.zip ec2-user@3.83.118.114:/home/ec2-user/artifact'
+                sh 'scp -v -o StrictHostKeyChecking=no -i ${keyfile} /var/lib/jenkins/workspace/LaravelTest/artifact2.zip ec2-user@3.83.118.114:/home/ec2-user/artifact'
             }
             sshagent(credentials: ['aws-ec2']) {
-                sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.83.118.114 unzip -o /home/ec2-user/artifact/artifact.zip -d /var/www/html'
+                sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.83.118.114 unzip -o /home/ec2-user/artifact/artifact2.zip -d /var/www/html'
                 script {
                     try {
                         sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.83.118.114 sudo chmod 777 /var/www/html/storage -R'
