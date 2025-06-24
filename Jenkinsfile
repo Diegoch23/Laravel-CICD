@@ -57,7 +57,7 @@ pipeline {
 
     post {
         success {
-            
+            //Comentario
             sh 'cd "/var/lib/jenkins/workspace/LaravelTest"'
             sh 'rm -rf artifact.zip'
             sh 'zip -r artifact.zip . -x "*node_modules**"'
